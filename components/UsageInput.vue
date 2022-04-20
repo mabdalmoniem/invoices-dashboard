@@ -26,7 +26,7 @@
                 type="text"
                 name="account-number"
                 id="account-number"
-                v-model="accountName"
+                v-model="formInput.accountName"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -44,7 +44,7 @@
                 type="date"
                 name="start-date"
                 id="start-date"
-                v-model="startData"
+                v-model="formInput.startData"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -62,7 +62,7 @@
                 type="date"
                 name="end-date"
                 id="end-date"
-                v-model="endData"
+                v-model="formInput.endData"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -77,9 +77,11 @@
             </label>
             <div class="mt-1">
               <input
-                type="text"
+                type="number"
                 name="call-unit-fee"
                 id="call-unit-fee"
+                v-model="formInput.callUnitFee"
+                oninput="if(this.value < 0) this.value = 0;"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -94,9 +96,11 @@
             </label>
             <div class="mt-1">
               <input
-                type="text"
+                type="number"
                 name="sms-unit-fee"
                 id="sms-unit-fee"
+                v-model="formInput.smsUnitFee"
+                oninput="if(this.value < 0) this.value = 0;"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -108,15 +112,28 @@
 </template>
 
 <script>
+import { debounce } from "lodash";
+
 export default {
   name: "UsageInput",
   data() {
     return {
-      accountName: "",
-      startData: "",
-      endData: "",
-      callUnitFee: 0,
+      formInput: {
+        accountName: "",
+        startData: "",
+        endData: "",
+        callUnitFee: 0,
+        smsUnitFee: 0,
+      },
     };
+  },
+  watch: {
+    formInput: {
+      handler: debounce(function (newValue) {
+        //
+      }, 1000),
+      deep: true,
+    },
   },
 };
 </script>

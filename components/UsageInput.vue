@@ -131,7 +131,7 @@ export default {
     formInput: {
       handler: debounce(function (newValue) {
         this.$emit("inputWasUpdated", { ...newValue });
-      }, 1000),
+      }, 0),
       deep: true,
     },
   },

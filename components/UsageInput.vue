@@ -130,7 +130,7 @@ export default {
   watch: {
     formInput: {
       handler: debounce(function (newValue) {
-        //
+        this.$emit("inputWasUpdated", { ...newValue });
       }, 1000),
       deep: true,
     },

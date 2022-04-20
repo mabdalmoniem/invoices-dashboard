@@ -2,7 +2,7 @@
   <div class="h-screen p-8 bg-gray-50">
     <div class="max-w-7xl mx-auto p8 sm:p-6 bg-white rounded-lg">
       <UsageInput @inputWasUpdated="onInputUpdate" />
-      <div class="mt-24 space-y-12 lg:space-y-0 flex space-x-4 justify-between">
+      <div class="space-y-12 lg:space-y-0 flex space-x-4 justify-between">
         <template v-if="!isObjectEmpty(callsInboundUsage)">
           <UsageStats
             title="Calls Inbound Usage"
@@ -38,9 +38,14 @@ export default {
     };
   },
   methods: {
-    onInputUpdate(payload) {
+    resetOldUsage() {
+      this.callsInboundUsage = {};
+      this.smsInboundLongcodeUsage = {};
+    },
+    onInputUpdate(queryParams) {
       this.isLoading = true;
-      getTwilioUsage({})
+      this.resetOldUsage();
+      getTwilioUsage(queryParams)
         .then((response) => {
           this.isLoading = false;
           // TODO: handle error

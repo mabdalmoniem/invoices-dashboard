@@ -9,6 +9,6 @@ const apiClient = axios.create({
 });
 
 
-export function getTwilioUsage({}) {
-  return apiClient.get('/twilio-test-run')
+export function getTwilioUsage(queryParams = {}) {
+  return apiClient.get('/twilio-test-run', {params: {...queryParams}})
 }

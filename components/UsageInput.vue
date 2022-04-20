@@ -26,7 +26,7 @@
                 type="text"
                 name="account-number"
                 id="account-number"
-                v-model="formInput.accountName"
+                v-model="formInput.account_number"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -44,7 +44,7 @@
                 type="date"
                 name="start-date"
                 id="start-date"
-                v-model="formInput.startData"
+                v-model="formInput.start_date"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -62,45 +62,7 @@
                 type="date"
                 name="end-date"
                 id="end-date"
-                v-model="formInput.endData"
-                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              />
-            </div>
-          </div>
-
-          <div class="sm:col-span-2">
-            <label
-              for="call-unit-fee"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Call Unit Fee
-            </label>
-            <div class="mt-1">
-              <input
-                type="number"
-                name="call-unit-fee"
-                id="call-unit-fee"
-                v-model="formInput.callUnitFee"
-                oninput="if(this.value < 0) this.value = 0;"
-                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              />
-            </div>
-          </div>
-
-          <div class="sm:col-span-2">
-            <label
-              for="sms-unit-fee"
-              class="block text-sm font-medium text-gray-700"
-            >
-              SMS Unit Fee
-            </label>
-            <div class="mt-1">
-              <input
-                type="number"
-                name="sms-unit-fee"
-                id="sms-unit-fee"
-                v-model="formInput.smsUnitFee"
-                oninput="if(this.value < 0) this.value = 0;"
+                v-model="formInput.end_date"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -112,25 +74,32 @@
 </template>
 
 <script>
-import { debounce } from "lodash";
+import { debounce, omitBy, isNil, isUndefined } from "lodash";
 
 export default {
   name: "UsageInput",
   data() {
     return {
       formInput: {
-        accountName: "",
-        startData: "",
-        endData: "",
-        callUnitFee: 0,
-        smsUnitFee: 0,
+        account_number: "",
+        start_date: "",
+        end_date: "",
       },
     };
+  },
+  methods: {
+    camelToSnakeCase(str) {
+      return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+    },
   },
   watch: {
     formInput: {
       handler: debounce(function (newValue) {
-        this.$emit("inputWasUpdated", { ...newValue });
+        const params = omitBy(
+          newValue,
+          (v) => isUndefined(v) || isNil(v) || v === ""
+        );
+        this.$emit("inputWasUpdated", { ...params });
       }, 0),
       deep: true,
     },

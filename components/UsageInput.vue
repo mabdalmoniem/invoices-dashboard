@@ -9,7 +9,11 @@
             >
               Twilio Usage Report
             </h1>
-            <button @click.prevent="reset" class="text-sm text-gray-400">
+            <button
+              data-test="reset-btn"
+              @click.prevent="reset"
+              class="text-sm text-gray-400"
+            >
               Reset
             </button>
           </div>
@@ -35,6 +39,7 @@
                 name="account-number"
                 id="account-number"
                 v-model="formInput.account_number"
+                data-test="account-number-test"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -90,6 +95,7 @@
                 id="Call Unit Fee"
                 v-model="formInput.calls_inbound_fee"
                 oninput="if(this.value < 0) this.value = 0;"
+                data-test="calls-inbound-fee"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -109,6 +115,7 @@
                 id="SMS Unit Fee"
                 v-model="formInput.sms_inbound_longcode_fee"
                 oninput="if(this.value < 0) this.value = 0;"
+                data-test="sms-inbound-longcode-fee"
                 class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -161,7 +168,7 @@ export default {
         } else {
           this.$emit("inputWasReset");
         }
-      }, 0),
+      }, 1000),
       deep: true,
     },
   },

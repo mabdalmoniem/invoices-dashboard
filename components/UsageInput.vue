@@ -1,11 +1,11 @@
 <template>
-  <form class="space-y-8 divide-y divide-gray-200">
+  <form class="p-8 lg:p-0 space-y-8 divide-y divide-gray-200">
     <div class="space-y-8 divide-y divide-gray-200">
       <div class="pt-8">
         <div>
-          <div class="flex justify-between">
+          <div class="flex justify-between items-start">
             <h1
-              class="text-xl font-extrabold text-gray-900 sm:text-5xl sm:leading-none sm:tracking-tight"
+              class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-gray-800 sm:text-5xl sm:leading-none sm:tracking-tight pb-4"
             >
               Twilio Usage Report
             </h1>

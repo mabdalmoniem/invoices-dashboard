@@ -1,11 +1,14 @@
 <template>
-  <div class="h-screen p-8 bg-gray-50">
+  <div class="p-8 block lg:flex lg:items-center lg:justify-center">
     <div class="max-w-7xl mx-auto p8 sm:p-6 bg-white rounded-lg">
       <UsageInput
         @inputWasUpdated="onInputUpdate"
         @inputWasReset="onInputReset"
       />
-      <div class="mt-12 space-y-12 lg:space-y-0 flex space-x-4 justify-between">
+      <div v-if="message" class="flex mt-12 items-center justify-center">
+        <p class="text-md text-gray-400">{{ message }}</p>
+      </div>
+      <div class="mt-12 flex space-x-4 justify-between p-4 lg:p-0">
         <template v-if="!isObjectEmpty(callsInboundUsage)">
           <UsageStats
             title="Calls Inbound Usage"
@@ -36,6 +39,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      message: "Enter some input to get started 🏃",
       callsInboundUsage: {},
       smsInboundLongcodeUsage: {},
     };
@@ -44,16 +48,25 @@ export default {
     resetOldUsage() {
       this.callsInboundUsage = {};
       this.smsInboundLongcodeUsage = {};
+      this.message = "Enter some input to get started 🏃";
+    },
+    startLoading() {
+      this.isLoading = true;
+      this.message = "Loading 👀";
+    },
+    stopLoading(message) {
+      this.isLoading = false;
+      this.message = message;
     },
     onInputReset() {
       this.resetOldUsage();
     },
     onInputUpdate(queryParams) {
-      this.isLoading = true;
       this.resetOldUsage();
+      this.startLoading();
       getTwilioUsage(queryParams)
         .then((response) => {
-          this.isLoading = false;
+          let message = "Here is the results 👀";
           // TODO: handle error
           const usageRecords = response?.data?.data;
           if (usageRecords.length) {
@@ -63,7 +76,11 @@ export default {
             this.smsInboundLongcodeUsage = usageRecords.find(
               (u) => u.category == "sms-inbound-longcode"
             );
+          } else {
+            message =
+              "The input you have entered doesn't match any usage records 😔";
           }
+          this.stopLoading(message);
         })
         .catch((error) => {});
     },

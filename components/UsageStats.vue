@@ -3,7 +3,7 @@
     class="w-full p-8 bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col"
   >
     <div class="flex-1">
-      <h3 class="text-xl font-semibold text-gray-900">{{ title }}</h3>
+      <h3 class="text-xl font-semibold text-gray-700">{{ title }}</h3>
       <ul v-if="!isObjectEmpty(usage)" role="list" class="mt-6 space-y-6">
         <li v-for="(key, i) in keys" :key="i" class="flex">
           <CheckIcon

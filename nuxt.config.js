@@ -8,6 +8,9 @@ export default {
     htmlAttrs: {
       lang: 'en'
     },
+    bodyAttrs: {
+      class: 'bg-gradient-to-r from-gray-800 to-indigo-500'
+    },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

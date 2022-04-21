@@ -49,7 +49,7 @@ export default {
         .then((response) => {
           this.isLoading = false;
           // TODO: handle error
-          const usageRecords = response?.data?.usage_records;
+          const usageRecords = response?.data?.data;
           if (usageRecords.length) {
             this.callsInboundUsage = usageRecords.find(
               (u) => u.category == "calls-inbound"

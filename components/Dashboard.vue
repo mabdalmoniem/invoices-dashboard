@@ -5,9 +5,8 @@
         @inputWasUpdated="onInputUpdate"
         @inputWasReset="onInputReset"
       />
-      <div v-if="message" class="flex mt-12 items-center justify-center">
-        <p class="text-md text-gray-400">{{ message }}</p>
-      </div>
+      <ErrorMessage :message="errorMessage" />
+      <StateMessage :message="stateMessage" />
       <div class="mt-12 flex space-x-4 justify-between p-4 lg:p-0">
         <template v-if="!isObjectEmpty(callsInboundUsage)">
           <UsageStats
@@ -31,32 +30,36 @@ import UsageInput from "./UsageInput.vue";
 import { getTwilioUsage } from "../api-client";
 import UsageStats from "./UsageStats.vue";
 import helpersMixin from "../mixins/helpers";
+import StateMessage from "./StateMessage.vue";
+import ErrorMessage from "./ErrorMessage.vue";
 
 export default {
   name: "Dashboard",
-  components: { UsageInput, UsageStats },
+  components: { UsageInput, UsageStats, StateMessage, ErrorMessage },
   mixins: [helpersMixin],
   data() {
     return {
       isLoading: false,
-      message: "Enter some input to get started 🏃",
+      stateMessage: "Enter some input to get started 🏃",
+      errorMessage: "",
       callsInboundUsage: {},
       smsInboundLongcodeUsage: {},
     };
   },
   methods: {
     resetOldUsage() {
+      this.errorMessage = "";
+      this.stateMessage = "Enter some input to get started 🏃";
       this.callsInboundUsage = {};
       this.smsInboundLongcodeUsage = {};
-      this.message = "Enter some input to get started 🏃";
     },
     startLoading() {
       this.isLoading = true;
-      this.message = "Loading 👀";
+      this.stateMessage = "Loading 👀";
     },
     stopLoading(message) {
       this.isLoading = false;
-      this.message = message;
+      this.stateMessage = message;
     },
     onInputReset() {
       this.resetOldUsage();
@@ -82,7 +85,12 @@ export default {
           }
           this.stopLoading(message);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          this.resetOldUsage();
+          this.errorMessage = error.response?.datqa?.message
+            ? `${error.response?.data?.message} 😔`
+            : "An error occurred 😔";
+        });
     },
   },
 };

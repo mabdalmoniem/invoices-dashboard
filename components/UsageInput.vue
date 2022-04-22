@@ -5,7 +5,7 @@
         <div>
           <div class="flex justify-between items-start">
             <h1
-              class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-gray-800 sm:text-5xl sm:leading-none sm:tracking-tight pb-4"
+              class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-gray-700 sm:text-5xl sm:leading-none sm:tracking-tight pb-4"
             >
               Twilio Usage Report
             </h1>
@@ -144,6 +144,7 @@ export default {
   },
   methods: {
     reset() {
+      this.$emit("inputWasReset");
       this.formInput = {
         account_number: "",
         start_date: "",

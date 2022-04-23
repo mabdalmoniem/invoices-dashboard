@@ -20,3 +20,15 @@ $ yarn generate
 $ yarn e2e
 $ yarn e2e:silent # for silent run
 ```
+
+## Environment Setup
+
+```
+# update /api-client/index.js and point it to the api of your backend
+const apiClient = axios.create({
+  baseURL: 'YOUR_API_ENDPOINT', // <- this line
+  headers: {
+    'Accept': 'application/json',
+  }
+});
+```
